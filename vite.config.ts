@@ -11,7 +11,7 @@ export default defineConfig({
       '/api': {
         target: 'https://doc-api-buhwasc4ergabwab.southafricanorth-01.azurewebsites.net',
         changeOrigin: true,
-        secure: false,
+        secure: true,
       },
     },
   },
