@@ -9,7 +9,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:5196',
+        target: 'https://doc-api-buhwasc4ergabwab.southafricanorth-01.azurewebsites.net',
         changeOrigin: true,
         secure: false,
       },
