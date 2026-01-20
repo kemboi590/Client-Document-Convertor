@@ -16,3 +16,5 @@ export default defineConfig({
     },
   },
 })
+// https://doc-api-buhwasc4ergabwab.southafricanorth-01.azurewebsites.net
+// http://localhost:5196
