@@ -1,6 +1,12 @@
+import { useState } from 'react';
 import { WordToPdf } from '../src/components/WordToPdf';
+import { PdfToWord } from '../src/components/PdfToWord';
+
+type ConversionTab = 'word-to-pdf' | 'pdf-to-word';
 
 export function HomePage() {
+    const [activeTab, setActiveTab] = useState<ConversionTab>('word-to-pdf');
+
     return (
         <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50">
             {/* Header */}
@@ -26,19 +32,24 @@ export function HomePage() {
                             <h1 className="text-xl font-bold text-gray-900">Document Converter</h1>
                         </div>
                         <nav className="flex items-center gap-6">
-                            <a
-                                href="#"
-                                className="text-gray-600 hover:text-blue-600 font-medium transition-colors"
+                            <button
+                                onClick={() => setActiveTab('word-to-pdf')}
+                                className={`font-medium transition-colors ${activeTab === 'word-to-pdf'
+                                        ? 'text-blue-600'
+                                        : 'text-gray-600 hover:text-blue-600'
+                                    }`}
                             >
                                 Word to PDF
-                            </a>
-                            <a
-                                href="#"
-                                className="text-gray-400 hover:text-gray-600 font-medium transition-colors cursor-not-allowed"
-                                title="Coming soon"
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('pdf-to-word')}
+                                className={`font-medium transition-colors ${activeTab === 'pdf-to-word'
+                                        ? 'text-red-600'
+                                        : 'text-gray-600 hover:text-red-600'
+                                    }`}
                             >
                                 PDF to Word
-                            </a>
+                            </button>
                         </nav>
                     </div>
                 </div>
@@ -51,13 +62,37 @@ export function HomePage() {
                         Convert Documents with Ease
                     </h2>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        Fast, secure, and reliable document conversion. Transform your Word documents
-                        to PDF format instantly.
+                        Fast, secure, and reliable document conversion. Transform your documents
+                        between Word and PDF formats instantly.
                     </p>
                 </div>
 
+                {/* Tab Buttons */}
+                <div className="flex justify-center mb-8">
+                    <div className="inline-flex bg-gray-100 rounded-xl p-1">
+                        <button
+                            onClick={() => setActiveTab('word-to-pdf')}
+                            className={`px-6 py-2 rounded-lg font-medium transition-all ${activeTab === 'word-to-pdf'
+                                    ? 'bg-white text-blue-600 shadow-sm'
+                                    : 'text-gray-600 hover:text-gray-900'
+                                }`}
+                        >
+                            Word → PDF
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('pdf-to-word')}
+                            className={`px-6 py-2 rounded-lg font-medium transition-all ${activeTab === 'pdf-to-word'
+                                    ? 'bg-white text-red-600 shadow-sm'
+                                    : 'text-gray-600 hover:text-gray-900'
+                                }`}
+                        >
+                            PDF → Word
+                        </button>
+                    </div>
+                </div>
+
                 {/* Conversion Component */}
-                <WordToPdf />
+                {activeTab === 'word-to-pdf' ? <WordToPdf /> : <PdfToWord />}
 
                 {/* Features Section */}
                 <div className="mt-16 grid md:grid-cols-3 gap-8">

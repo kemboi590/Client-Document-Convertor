@@ -63,4 +63,50 @@ export const documentApi = {
             return null;
         }
     },
+
+    /**
+     * Convert a PDF document to Word
+     */
+    async convertToWord(file: File, targetFormat: 'docx' | 'doc' = 'docx'): Promise<ConversionResult> {
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('targetFormat', targetFormat);
+
+            const response = await fetch(`${API_BASE_URL}/api/document/convert/pdf-to-word`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => null);
+                return {
+                    success: false,
+                    error: errorData?.detail || errorData?.title || 'Conversion failed',
+                };
+            }
+
+            const blob = await response.blob();
+            const contentDisposition = response.headers.get('Content-Disposition');
+            let fileName = `converted.${targetFormat}`;
+
+            if (contentDisposition) {
+                const fileNameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+                if (fileNameMatch && fileNameMatch[1]) {
+                    fileName = fileNameMatch[1].replace(/['"]/g, '');
+                }
+            }
+
+            return {
+                success: true,
+                blob,
+                fileName,
+            };
+        } catch (error) {
+            return {
+                success: false,
+                error: error instanceof Error ? error.message : 'An unexpected error occurred',
+            };
+        }
+    },
 };
